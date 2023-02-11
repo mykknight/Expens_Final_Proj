@@ -11,7 +11,7 @@ body {
     box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
     background: #73cef3;
     padding: 20px;
-    margin: 15% auto 0;
+    margin: 10% auto 0;
 }
 
 #submit {
@@ -40,4 +40,9 @@ body {
     margin: 10px 0;
     width: 98%;
     border: 1px solid #999;
+}
+
+#msg {
+    color: red;
+    text-decoration:solid;
 }
