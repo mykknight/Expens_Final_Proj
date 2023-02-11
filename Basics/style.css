@@ -9,14 +9,14 @@ body {
 
     width: 300px;
     box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
-    background: #73cef3;
+    background: #daf10b;
     padding: 20px;
     margin: 10% auto 0;
 }
 
-#submit {
+#signup, #login {
     padding: 10px;
-    background-color: greenyellow;
+    background-color: green;
     color: #140101e9;
     width: 100%;
     border-radius: 20px;
@@ -26,6 +26,25 @@ body {
     outline: none;
     cursor: pointer;
     
+}
+
+.btn {
+    background-color: darkslategray;
+    color: white;
+
+}
+.txt {
+    text-decoration: solid;
+    text-align: center;
+    color: rgb(10, 50, 250);
+}
+.p {
+    color: red;
+    text-align: center;
+    text-transform: capitalize;
+    text-decoration-style: solid ;
+    text-decoration: solid;
+    text-decoration-color: red;
 }
 
 .container h1 {

@@ -7,6 +7,9 @@ Router.use(cors());
 const UserCont = require('../Controllers/con_signup');
 
 Router.post('/user/signup',UserCont.UserSignUp);
+Router.get('/user/signup', UserCont.getUsers);
+
+Router.post('/user/login', UserCont.UserLogin);
 
 
 
