@@ -1,0 +1,21 @@
+body {
+    font-family: sans-serif;
+    box-sizing: border-box;
+    background-color: antiquewhite;
+    background-position: center;
+}
+
+.container{
+
+    width: 500px;
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    background: #daf10b;
+    padding: 80px;
+    margin: 10% auto 0;
+}
+
+.btn {
+    background-color: darkslategray;
+    color: white;
+
+}

@@ -1,4 +1,5 @@
 const User = require('../Models/signup');
+const Expens = require('../Models/expens');
 const bcrypt = require('bcrypt');
 
 exports.UserSignUp = (req,res,next) => {
@@ -30,9 +31,12 @@ exports.UserLogin = async (req,res,next) => {
     if(user[0]){
         bcrypt.compare(Password, user[0].Password, (err, output) => {
 
-            if(err) return res.status(500).json({msg: 'Something went wrong'});
+            if(err) return res.status(500).json({ msg: 'Something went wrong'});
 
-            if(output==true) return res.status(201).json({msg: 'User login sucessfully'});
+            if(output==true) {
+                //res.redirect('A:\ExpensTrak-final-Proj\Basics\expens.html');
+                return res.status(201).json({sucess: true, msg: 'User login sucessfully'});
+            }
 
             else return res.status(404).json({msg: 'Password is wrong'});
         })
@@ -40,4 +44,36 @@ exports.UserLogin = async (req,res,next) => {
     else return res.status(400).json({msg: 'User Does not exist'});  
    }
    catch(err){console.log(err)};
+}
+
+exports.addexp = async (req,res,next) => {
+
+    const { Amount, Description, Category} = req.body;
+
+    try {
+        const data = await Expens.create({ Amount, Description, Category});
+        res.status(215).json({newEx: data});
+    }
+
+    catch(err){console.log(err)};
+}
+
+exports.allexp = async (req,res,next) => {
+
+    try {
+       const exps = await Expens.findAll();
+       res.status(216).json(exps);
+    }
+    catch(err){console.log(err)};
+}
+
+exports.dltexp = async (req,res,next) => {
+    const id = req.params.prodID;
+
+    try{
+        await Expens.destroy({ where: {id: id}});
+        res.status(217).json();
+    }
+
+    catch(err){console.log(err)};
 }

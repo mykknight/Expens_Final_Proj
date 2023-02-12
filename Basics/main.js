@@ -1,3 +1,4 @@
+
 var btn = document.getElementById('signup');
 if(btn) btn.addEventListener('click', signup);
 
@@ -6,7 +7,6 @@ if(lgn) lgn.addEventListener('click', login);
 
 function signup(e) {
     e.preventDefault();
-    let f=0;
 
     let p = document.getElementById('p');
     p.innerText = "";
@@ -23,11 +23,6 @@ function signup(e) {
 
     if(name == '' || email == '' || psd == '') return alert('Please fill the data');
 
-    // axios.get('http://localhost:4000/user/signup')
-    // .then(res => {
-    //     for(let i=0; i<res.data.length; i++){
-    //         if(res.data.Email == email) f=1;
-    //     }
         try {
             axios.post('http://localhost:4000/user/signup', myObj)
             .then((res) => console.log(res.data.add))
@@ -61,9 +56,10 @@ function login(e) {
     .then(msg => {
         console.log(msg);
         alert('User Sucessfully login');
+        window.location.href = "\expens.html";
     })
     .catch(err => {
-        console.log(err.response.data.msg);
+        console.log(err);
         if(err.response.status == 400) q.appendChild(document.createTextNode('User doesn`t exist'));
         else q.appendChild(document.createTextNode('Password is wrong'));
     }); 
