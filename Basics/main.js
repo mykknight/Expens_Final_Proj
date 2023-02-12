@@ -16,20 +16,19 @@ function signup(e) {
     let psd = document.getElementById('psw').value;
 
     let myObj = {
-        Name: name,
+        UserName: name,
         Email: email,
         Password: psd
     };
 
     if(name == '' || email == '' || psd == '') return alert('Please fill the data');
 
-    axios.get('http://localhost:4000/user/signup')
-    .then(res => {
-        for(let i=0; i<res.data.length; i++){
-            if(res.data.Email == email) f=1;
-        }
-
-        if(f==0) {
+    // axios.get('http://localhost:4000/user/signup')
+    // .then(res => {
+    //     for(let i=0; i<res.data.length; i++){
+    //         if(res.data.Email == email) f=1;
+    //     }
+        try {
             axios.post('http://localhost:4000/user/signup', myObj)
             .then((res) => console.log(res.data.add))
             .catch((err) => {
@@ -39,8 +38,8 @@ function signup(e) {
                 f=0;
                 console.log(err)});
         }
-    })
-    .then(err => console.log(err));
+
+        catch(err){console.log(err)};
 }
 
 function login(e) {
@@ -64,7 +63,8 @@ function login(e) {
         alert('User Sucessfully login');
     })
     .catch(err => {
-        if(err.response.status == 404) q.appendChild(document.createTextNode('User doesn`t exist'));
+        console.log(err.response.data.msg);
+        if(err.response.status == 400) q.appendChild(document.createTextNode('User doesn`t exist'));
         else q.appendChild(document.createTextNode('Password is wrong'));
     }); 
 
