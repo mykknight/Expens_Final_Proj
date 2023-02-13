@@ -1,5 +1,6 @@
 const express = require('express');
 const Router = express.Router();
+const userauthentication = require('../middleware/auth');
 
 var cors = require('cors');
 Router.use(cors());
@@ -10,11 +11,11 @@ Router.post('/user/signup',UserCont.UserSignUp);
 
 Router.post('/user/login', UserCont.UserLogin);
 
-Router.post('/expense/add-exp', UserCont.addexp);
+Router.post('/expense/add-exp', userauthentication.authentication , UserCont.addexp);
 
-Router.get('/expense/get-exp', UserCont.allexp);
+Router.get('/expense/get-exp', userauthentication.authentication , UserCont.allexp);
 
-Router.delete('/expense/dlt-exp/:prodID', UserCont.dltexp);
+Router.delete('/expense/dlt-exp/:prodID', userauthentication.authentication , UserCont.dltexp);
 
 
 

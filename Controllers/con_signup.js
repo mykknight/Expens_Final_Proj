@@ -1,6 +1,7 @@
 const User = require('../Models/signup');
 const Expens = require('../Models/expens');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.UserSignUp = (req,res,next) => {
 
@@ -22,6 +23,10 @@ exports.UserSignUp = (req,res,next) => {
 
 exports.UserLogin = async (req,res,next) => {
 
+    function generateAccessToken(id,name) {
+        return jwt.sign({ userId: id, name: name}, '23102000');
+    }
+
     try {
     const Email = req.body.Email;
     const Password = req.body.Password;
@@ -35,7 +40,7 @@ exports.UserLogin = async (req,res,next) => {
 
             if(output==true) {
                 //res.redirect('A:\ExpensTrak-final-Proj\Basics\expens.html');
-                return res.status(201).json({sucess: true, msg: 'User login sucessfully'});
+                return res.status(201).json({sucess: true, msg: 'User login sucessfully', token: generateAccessToken(user[0].id, user[0].UserName)});
             }
 
             else return res.status(404).json({msg: 'Password is wrong'});
@@ -51,7 +56,7 @@ exports.addexp = async (req,res,next) => {
     const { Amount, Description, Category} = req.body;
 
     try {
-        const data = await Expens.create({ Amount, Description, Category});
+        const data = await Expens.create({ Amount, Description, Category, UserId: req.user.id});
         res.status(215).json({newEx: data});
     }
 
@@ -61,7 +66,7 @@ exports.addexp = async (req,res,next) => {
 exports.allexp = async (req,res,next) => {
 
     try {
-       const exps = await Expens.findAll();
+       const exps = await Expens.findAll({ where: {UserId: req.user.id}});
        res.status(216).json(exps);
     }
     catch(err){console.log(err)};

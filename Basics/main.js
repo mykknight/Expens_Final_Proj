@@ -56,6 +56,7 @@ function login(e) {
     .then(msg => {
         console.log(msg);
         alert('User Sucessfully login');
+        localStorage.setItem('token', msg.data.token);
         window.location.href = "\expens.html";
     })
     .catch(err => {

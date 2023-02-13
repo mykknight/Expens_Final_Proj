@@ -3,8 +3,9 @@ var p=false;
 let w;
 btn.addEventListener('click',addvalue);
 
+const token = localStorage.getItem('token');
 
-axios.get('http://localhost:4000/expense/get-exp')
+axios.get('http://localhost:4000/expense/get-exp', { headers: {"Authorization" : token} })
 .then((response) => {
     for(var i=0; i<response.data.length; i++){
         prtdata(response.data[i]);
@@ -29,7 +30,7 @@ function addvalue(e){
     if(myobj.Amount=='' || myobj.Description=='') alert("Please enter the details");
     else{
         
-        axios.post('http://localhost:4000/expense/add-exp', myobj)
+        axios.post('http://localhost:4000/expense/add-exp',myobj, {headers: {"Authorization": token } })
         .then((response) => {
            prtdata(response.data.newEx);
         })
@@ -58,7 +59,7 @@ function prtdata(myobj){
 
     function dltexp(e){
         console.log(myobj.id);
-        axios.delete(`http://localhost:4000/expense/dlt-exp/${myobj.id}`);
+        axios.delete(`http://localhost:4000/expense/dlt-exp/${myobj.id}`, {headers: {"Authorization": token}});
         li.remove();
     }
 
