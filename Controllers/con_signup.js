@@ -67,7 +67,7 @@ exports.allexp = async (req,res,next) => {
 
     try {
        const exps = await Expens.findAll({ where: {UserId: req.user.id}});
-       res.status(216).json(exps);
+       res.status(216).json({exps: exps, prm: req.user.ispremiumuser});
     }
     catch(err){console.log(err)};
 }

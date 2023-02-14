@@ -1,14 +1,22 @@
 var btn = document.getElementById('btn');
+const rzp = document.getElementById('rzp-btn');
 var p=false;
 let w;
 btn.addEventListener('click',addvalue);
+rzp.addEventListener('click', rzpexp);
 
 const token = localStorage.getItem('token');
+const prm = document.getElementById('myfm');
 
 axios.get('http://localhost:4000/expense/get-exp', { headers: {"Authorization" : token} })
 .then((response) => {
-    for(var i=0; i<response.data.length; i++){
-        prtdata(response.data[i]);
+    if(response.data.prm) {
+        prm.innerHTML = 'You are a Premium User';
+        prm.style.color = 'Blue';
+     }
+    console.log(response);
+    for(var i=0; i<response.data.exps.length; i++){
+        prtdata(response.data.exps[i]);
     }
 })
 .catch((err) => {
@@ -64,4 +72,36 @@ function prtdata(myobj){
     }
 
     ui.append(li);
+}
+
+async function rzpexp(e) {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    console.log(13);
+    const response = await axios.get('http://localhost:4000/purchase/premiummembership', { headers: {"Authorization": token}});
+    console.log(response);
+    var options = {
+        "key": response.data.key_id,
+        "order_id": response.data.order.id,
+        "handler": async function (response) {
+            await axios.post('http://localhost:4000/purchase/updatetransactionstatus', {
+                order_id: options.order_id,
+                payment_id: response.razorpay_payment_id,
+            }, {headers: {"Authorization": token} }  )
+
+            alert("You are a Premium User Now")
+        },
+    };
+    const rzp1 = new Razorpay(options);
+    rzp1.open();
+
+    rzp1.on('payment.failed', async function (response) {
+        await axios.post('http://localhost:4000/purchase/updatetransactionstatus', {
+            order_id: options.order_id,
+            payment_id: response.razorpay_payment_id,
+        }, {headers: {"Authorization": token} }  )
+        console.log(response);
+        alert('Something went wrong');
+    });
+
 }
