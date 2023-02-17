@@ -6,8 +6,8 @@ exports.purchasepremium = async (req,res) => {
     
     try{
         var rzp = new Razorpay({
-            key_id: 'rzp_test_baF9eq6i2BVJKj',
-            key_secret: 'XKNJ5xt3pNkV8XMSqAvoO7LQ'
+            key_id: 'rzp_test_sUr2aReyfGipPm',
+            key_secret: 'O8vM838XEhrODVL7MCUsONH4'
         })
         const amount = 2500;
         console.log(9);
@@ -15,7 +15,7 @@ exports.purchasepremium = async (req,res) => {
             if(err) throw new Error(JSON.stringify(err));
             req.user.createOrder({ orderid: order.id, status: 'PENDING'})
             .then(() => {
-                return res.status(201).json({ order, key_id: 'rzp_test_baF9eq6i2BVJKj'});
+                return res.status(201).json({ order, key_id: 'rzp_test_sUr2aReyfGipPm'});
 
             }).catch(err => {throw new Error(err)})
         })

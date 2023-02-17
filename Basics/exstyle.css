@@ -12,10 +12,22 @@ body {
     background: #daf10b;
     padding: 80px;
     margin: 10% auto 0;
+    white-space:inherit
 }
 
 .btn {
     background-color: darkslategray;
     color: white;
 
+}
+
+#p4 {
+    text-align: left;
+    font-size: xx-large;
+}
+
+#ldrbrd {
+    width: 400px;
+    padding: 30px;
+    margin: 5% auto 0;
 }

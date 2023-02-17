@@ -11,4 +11,5 @@ Router.get('/purchase/premiummembership', userauthentication.authentication, pur
 
 Router.post('/purchase/updatetransactionstatus', userauthentication.authentication, purchaseContl.purpostpremium);
 
+
 module.exports = Router;

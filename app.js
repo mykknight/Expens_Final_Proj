@@ -10,8 +10,10 @@ const Order = require('./Models/Orders');
 
 const Routes = require('./Route/rot');
 const purRot = require('./Route/purchase');
+const premiumRot = require('./Route/premiumfetch');
 app.use(Routes);
 app.use(purRot);
+app.use(premiumRot);
 
 User.hasMany(Expens);
 Expens.belongsTo(User);

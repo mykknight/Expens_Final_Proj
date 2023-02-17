@@ -5,14 +5,17 @@ let w;
 btn.addEventListener('click',addvalue);
 rzp.addEventListener('click', rzpexp);
 
+
 const token = localStorage.getItem('token');
 const prm = document.getElementById('myfm');
 
 axios.get('http://localhost:4000/expense/get-exp', { headers: {"Authorization" : token} })
 .then((response) => {
+    
     if(response.data.prm) {
         prm.innerHTML = 'You are a Premium User';
         prm.style.color = 'Blue';
+        ShowLeadership();
      }
     console.log(response);
     for(var i=0; i<response.data.exps.length; i++){
@@ -90,6 +93,10 @@ async function rzpexp(e) {
             }, {headers: {"Authorization": token} }  )
 
             alert("You are a Premium User Now")
+            prm.innerHTML = 'You are a Premium User';
+            prm.style.color = 'Blue';
+            ShowLeadership();
+            
         },
     };
     const rzp1 = new Razorpay(options);
@@ -103,5 +110,27 @@ async function rzpexp(e) {
         console.log(response);
         alert('Something went wrong');
     });
+
+}
+
+async function ShowLeadership() {
+    let newElement = document.createElement('button');
+    newElement.innerHTML = 'Leader Board';
+
+    newElement.onclick = async () => {
+        const ldrbrdarray = await axios.get('http://localhost:4000/premium/leaderboard',  { headers: {"Authorization" : token} });
+        console.log(ldrbrdarray);
+        console.log(8);
+
+        const ui = document.getElementById('ldbr');
+        ui.innerHTML = 'Leader Board';
+        ldrbrdarray.data.forEach(element => {
+            let li = document.createElement('li');
+            li.appendChild(document.createTextNode(`Name: ${element.UserName} ; TotalExpense: ${element.total_cost}`));
+            ui.append(li);
+        });
+    
+    }
+    document.getElementById('con').insertBefore(newElement, document.getElementById('p4'));
 
 }
