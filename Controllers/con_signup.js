@@ -2,6 +2,7 @@ const User = require('../Models/signup');
 const Expens = require('../Models/expens');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const sequelize = require('../util/database');
 
 exports.UserSignUp = (req,res,next) => {
 
@@ -54,9 +55,10 @@ exports.UserLogin = async (req,res,next) => {
 exports.addexp = async (req,res,next) => {
 
     const { Amount, Description, Category} = req.body;
+    const t = await sequelize.transaction()
 
     try {
-        const data = await Expens.create({ Amount, Description, Category, UserId: req.user.id});
+        const data = await Expens.create({ Amount, Description, Category, UserId: req.user.id}, {transaction: t});
         let newcost;
         console.log(req.user.TotalCost + '+++' + Amount);
         if(req.user.TotalCost){
@@ -64,11 +66,16 @@ exports.addexp = async (req,res,next) => {
         }
         else newcost = Amount;
         console.log(newcost);
-        req.user.update( {TotalCost: newcost} );
-        res.status(215).json({newEx: data});
+        await req.user.update( {TotalCost: newcost}, {transaction: t} );
+        await t.commit();
+        return res.status(215).json({newEx: data});
     }
 
-    catch(err){console.log(err)};
+    catch (err) {
+        console.log(err);
+        await t.rollback();
+        return res.status(500).json({ sucess: false, error: err});
+    }
 }
 
 exports.allexp = async (req,res,next) => {
@@ -82,11 +89,20 @@ exports.allexp = async (req,res,next) => {
 
 exports.dltexp = async (req,res,next) => {
     const id = req.params.prodID;
+    const t = await sequelize.transaction();
 
     try{
-        await Expens.destroy({ where: {id: id}});
-        res.status(217).json();
+        const prc = await Expens.findByPk(id);
+        const newcost = req.user.TotalCost - prc.Amount;
+        await Expens.destroy({ where: {id: id}}, {transaction: t});
+        await req.user.update( {TotalCost: newcost}, {transaction: t});
+        await t.commit();
+        return res.status(217).json({ msg: 'sucessfully deleted'});
     }
 
-    catch(err){console.log(err)};
+    catch(err){
+        await t.rollback();
+        console.log(err);
+        return res.status(400).json({msg: 'Something went wrong'});
+    };
 }
