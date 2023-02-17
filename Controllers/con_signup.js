@@ -57,6 +57,14 @@ exports.addexp = async (req,res,next) => {
 
     try {
         const data = await Expens.create({ Amount, Description, Category, UserId: req.user.id});
+        let newcost;
+        console.log(req.user.TotalCost + '+++' + Amount);
+        if(req.user.TotalCost){
+            newcost = +req.user.TotalCost + +Amount;
+        }
+        else newcost = Amount;
+        console.log(newcost);
+        req.user.update( {TotalCost: newcost} );
         res.status(215).json({newEx: data});
     }
 

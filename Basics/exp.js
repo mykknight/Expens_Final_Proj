@@ -126,7 +126,7 @@ async function ShowLeadership() {
         ui.innerHTML = 'Leader Board';
         ldrbrdarray.data.forEach(element => {
             let li = document.createElement('li');
-            li.appendChild(document.createTextNode(`Name: ${element.UserName} ; TotalExpense: ${element.total_cost}`));
+            li.appendChild(document.createTextNode(`Name: ${element.UserName} ; TotalExpense: ${element.TotalCost}`));
             ui.append(li);
         });
     
