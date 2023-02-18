@@ -3,7 +3,6 @@ const Order = require('../Models/Orders');
 
 
 exports.purchasepremium = async (req,res) => {
-    
     try{
         var rzp = new Razorpay({
             key_id: 'rzp_test_sUr2aReyfGipPm',
