@@ -1,3 +1,4 @@
+
 var btn = document.getElementById('btn');
 const rzp = document.getElementById('rzp-btn');
 var p=false;
@@ -133,4 +134,20 @@ async function ShowLeadership() {
     }
     document.getElementById('con').insertBefore(newElement, document.getElementById('p4'));
 
+}
+
+function download() {
+    axios.get('http://localhost:4000/userfile/download')
+    .then(res => {
+        if(res.status == 201){
+            var a =document.createElement('a');
+            a.href = res.data.filelink;
+            a.download = 'myexpense.csv';
+            a.click();
+        }
+        else {
+            throw new Error(res.data.message);
+        }
+    })
+    .catch(err => console.log(err));
 }
