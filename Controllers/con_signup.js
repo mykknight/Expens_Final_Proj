@@ -83,8 +83,36 @@ exports.addexp = async (req,res,next) => {
 exports.allexp = async (req,res,next) => {
 
     try {
-       const exps = await Expens.findAll({ where: {UserId: req.user.id}});
-       res.status(216).json({exps: exps, prm: req.user.ispremiumuser});
+        let allowitem = 2;
+        const page = req.params.page;
+        let totalexp;
+        await Expens.count()
+        .then((total) => {
+            totalexp = total;
+            return Expens.findAll({
+                where: {UserId: req.user.id},
+                offset: (page-1) * allowitem,
+                limit: allowitem,
+            });
+        })
+        .then((expens) => {
+            //console.log(expens);
+            res.status(216).json({
+                prm: req.user.ispremiumuser,
+                expenses: expens,
+                currentPage: page,
+                hasnextPage: allowitem * page < totalexp,
+                nextPage: Number(page) + 1,
+                haspreviousPage: page > 1,
+                previousPage: page - 1,
+                lastPage: Math.ceil(totalexp/allowitem),
+            });
+        })
+        .catch(err => {
+            throw new Error(err);
+        })
+    //    const exps = await Expens.findAll({ where: {UserId: req.user.id}});
+    //    res.status(216).json({exps: exps, prm: req.user.ispremiumuser});
     }
     catch(err){console.log(err)};
 }

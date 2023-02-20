@@ -1,6 +1,7 @@
 
 var btn = document.getElementById('btn');
 const rzp = document.getElementById('rzp-btn');
+const pgnation = document.getElementById('pagination');
 var p=false;
 let w;
 btn.addEventListener('click',addvalue);
@@ -10,7 +11,9 @@ rzp.addEventListener('click', rzpexp);
 const token = localStorage.getItem('token');
 const prm = document.getElementById('myfm');
 
-axios.get('http://localhost:4000/expense/get-exp', { headers: {"Authorization" : token} })
+let page =1;
+
+axios.get(`http://localhost:4000/expense/get-exp/${page}`, { headers: {"Authorization" : token} })
 .then((response) => {
     
     if(response.data.prm) {
@@ -18,14 +21,65 @@ axios.get('http://localhost:4000/expense/get-exp', { headers: {"Authorization" :
         prm.style.color = 'Blue';
         ShowLeadership();
      }
-    console.log(response);
-    for(var i=0; i<response.data.exps.length; i++){
-        prtdata(response.data.exps[i]);
+     document.getElementById('details').innerHTML = '';
+    console.log(response.data.expenses.length);
+    for(var i=0; i<response.data.expenses.length; i++){
+        prtdata(response.data.expenses[i]);
     }
+    pagination(response.data);
 })
 .catch((err) => {
     console.log(err);
 });
+
+function pagination({
+    currentPage,
+    hasnextPage,
+    nextPage,
+    haspreviousPage,
+    previousPage,
+    lastPage,
+}) {
+    console.log(currentPage,hasnextPage,nextPage,haspreviousPage,previousPage,lastPage);
+    pgnation.innerHTML = '';
+    if(haspreviousPage){
+        const btn1 = document.createElement('button');
+        console.log('ver>>', 1);
+        btn1.innerHTML = previousPage;
+        btn1.addEventListener('click', () => getProducts(previousPage));
+        pgnation.appendChild(btn1);
+    }
+    const btn2 = document.createElement('button');
+    btn2.innerHTML = currentPage;
+    console.log('ver>>', 2);
+    btn2.addEventListener('click', () => getProducts(currentPage));
+    pgnation.appendChild(btn2);
+    if(hasnextPage){
+        const btn3 = document.createElement('button');
+        btn3.innerHTML = nextPage;
+        console.log('ver>>', 3);
+        btn3.addEventListener('click', () => getProducts(nextPage));
+        pgnation.appendChild(btn3);
+    }
+}
+
+function getProducts(page){
+    console.log('page onth>>', page);
+    pgnation.innerHTML = '';
+    document.getElementById('details').innerHTML = '';
+    axios.get(`http://localhost:4000/expense/get-exp/${page}`, { headers: {"Authorization" : token} })
+.then((response) => {
+
+    console.log(response);
+    for(var i=0; i<response.data.expenses.length; i++){
+        prtdata(response.data.expenses[i]);
+    }
+    pagination(response.data);
+})
+.catch((err) => {
+    console.log(err);
+});
+}
 
 
 function addvalue(e){
