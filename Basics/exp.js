@@ -137,17 +137,18 @@ async function ShowLeadership() {
 }
 
 function download() {
-    axios.get('http://localhost:4000/userfile/download')
+    axios.get('http://localhost:4000/userfile/download', {headers: {"Authorization" : token}})
     .then(res => {
-        if(res.status == 201){
+        console.log(res);
+        if(res.status == 200){
             var a =document.createElement('a');
-            a.href = res.data.filelink;
+            a.href = res.data.fileURL;
             a.download = 'myexpense.csv';
             a.click();
         }
         else {
-            throw new Error(res.data.message);
+            throw new Error(res.data.err);
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err.response.data.err));
 }

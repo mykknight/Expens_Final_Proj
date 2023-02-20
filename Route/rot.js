@@ -17,6 +17,8 @@ Router.get('/expense/get-exp', userauthentication.authentication , UserCont.alle
 
 Router.delete('/expense/dlt-exp/:prodID', userauthentication.authentication , UserCont.dltexp);
 
+Router.get('/userfile/download', userauthentication.authentication ,UserCont.downloadExp);
+
 
 
 module.exports = Router;

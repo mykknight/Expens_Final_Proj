@@ -11,6 +11,7 @@ const User = require('./Models/signup');
 const Expens = require('./Models/expens');
 const Order = require('./Models/Orders');
 const Forgotpassword = require('./Models/forgotpassword');
+const FileURL = require('./Models/fileURLs');
 
 const Routes = require('./Route/rot');
 const purRot = require('./Route/purchase');
@@ -30,6 +31,9 @@ Order.belongsTo(User);
 
 User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
+
+User.hasMany(FileURL);
+FileURL.belongsTo(User);
 
 const sequelize = require('./util/database');
 
