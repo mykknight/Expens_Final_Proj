@@ -29,7 +29,14 @@
         <input type="submit" id="rzp-btn" value="Buy Premium">
       </form>
       <button onclick="download()" id="expdownload">File download</button>
-      <p id="p4">Expenses:</p>
+      <p id="p4">
+        <p5>Expenses: </p5>
+        <select id="opt">
+          <option>2</option>
+          <option>4</option>
+        </select>
+        <button onclick="select()">Search</button>
+      </p>
         <script src = "https://checkout.razorpay.com/v1/checkout.js"></script>
       <ul id="details"></ul>
       <p2 id="pagination"> </p2>

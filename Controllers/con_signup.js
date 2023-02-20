@@ -83,8 +83,9 @@ exports.addexp = async (req,res,next) => {
 exports.allexp = async (req,res,next) => {
 
     try {
-        let allowitem = 2;
-        const page = req.params.page;
+        let allowitem = Number(req.params.nom);
+        const page = req.query.page || 1;
+        console.log('aaa>>>', Number(allowitem), 'bbb>>', page);
         let totalexp;
         await Expens.count()
         .then((total) => {

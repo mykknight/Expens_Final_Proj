@@ -13,7 +13,7 @@ Router.post('/user/login', UserCont.UserLogin);
 
 Router.post('/expense/add-exp', userauthentication.authentication , UserCont.addexp);
 
-Router.get('/expense/get-exp/:page', userauthentication.authentication , UserCont.allexp);
+Router.get('/expense/get-exp/pref/:nom', userauthentication.authentication , UserCont.allexp);
 
 Router.delete('/expense/dlt-exp/:prodID', userauthentication.authentication , UserCont.dltexp);
 
