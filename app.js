@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const helmet = require('helmet');
+//const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
 const fs = require('fs');
@@ -34,7 +34,7 @@ const accessLogStream = fs.createWriteStream(
     {flag: 'a'}
 );
 
-app.use(helmet());
+//app.use(helmet());
 app.use(compression());
 app.use(morgan('combined', {stream: accessLogStream}));
 
@@ -53,8 +53,8 @@ FileURL.belongsTo(User);
 const sequelize = require('./util/database');
 
 sequelize
-//.sync({force: true})
-.sync()
+.sync({force: true})
+//.sync()
 .then((res) => app.listen(4000))
 .catch(err => console.log(err));
 
