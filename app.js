@@ -53,8 +53,8 @@ FileURL.belongsTo(User);
 const sequelize = require('./util/database');
 
 sequelize
-.sync({force: true})
-//.sync()
+//.sync({force: true})
+.sync()
 .then((res) => app.listen(4000))
 .catch(err => console.log(err));
 
