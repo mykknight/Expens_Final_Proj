@@ -29,14 +29,19 @@ app.use(purRot);
 app.use(premiumRot);
 app.use(frgt);
 
-const accessLogStream = fs.createWriteStream(
-    path.join(__dirname, 'access.log'),
-    {flag: 'a'}
-);
+app.use((req,res) => {
+    console.log('url>>', req.url);
+    res.sendFile(path.join(__dirname,`Basics/${req.url}`));
+})
+
+// const accessLogStream = fs.createWriteStream(
+//     path.join(__dirname, 'access.log'),
+//     {flag: 'a'}
+// );
 
 //app.use(helmet());
 app.use(compression());
-app.use(morgan('combined', {stream: accessLogStream}));
+//app.use(morgan('combined', {stream: accessLogStream}));
 
 User.hasMany(Expens);
 Expens.belongsTo(User);
