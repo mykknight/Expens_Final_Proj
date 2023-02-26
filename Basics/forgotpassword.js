@@ -13,11 +13,11 @@ async function forgotPassword(e) {
         email: email
     }
 
-    await axios.post('http://localhost:4000/password/forgotpassword', myObj)
+    await axios.post('http://44.201.35.159:4000/password/forgotpassword', myObj)
     .then(res => {
         console.log(res);
         alert(`${res.data.message}`);
-        window.location.href = `http://localhost:4000/password/resetpassword/${res.data.id}`;
+        window.location.href = `http://44.201.35.159:4000/password/resetpassword/${res.data.id}`;
 
     })
     .catch(err => console.log(err));
