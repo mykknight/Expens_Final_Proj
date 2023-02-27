@@ -30,7 +30,6 @@ app.use(premiumRot);
 app.use(frgt);
 
 app.use((req,res) => {
-    console.log('url>>', req.url);
     res.sendFile(path.join(__dirname,`Basics/${req.url}`));
 })
 

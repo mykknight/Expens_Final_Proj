@@ -24,8 +24,11 @@ function signup(e) {
     if(name == '' || email == '' || psd == '') return alert('Please fill the data');
 
         try {
-            axios.post('http://44.201.35.159:4000/user/signup', myObj)
-            .then((res) => console.log(res.data.add))
+            axios.post('http://localhost:4000/user/signup', myObj)
+            .then((res) => {
+                alert('SignUp successfull, please go to loginpage');
+                console.log(res.data.add)
+            })
             .catch((err) => {
                 //let p =document.getElementById('p');
                 p.appendChild(document.createTextNode('User already exists'));
@@ -52,7 +55,7 @@ function login(e) {
 
     if(email == '' || psd == '') return alert('Please fill the data');
 
-    axios.post('http://44.201.35.159:4000/user/login', myObj)
+    axios.post('http://localhost:4000/user/login', myObj)
     .then(msg => {
         console.log(msg);
         alert('User Sucessfully login');

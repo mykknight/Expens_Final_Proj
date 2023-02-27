@@ -15,6 +15,18 @@ const prm = document.getElementById('myfm');
 
 let page =1;
 
+axios.get('http://localhost:4000/expense/get-exp', { headers: {"Authorization" : token} })
+.then((res) => {
+    res.data.exp.forEach(exp => {
+        prtdata(exp);
+    })
+    if(res.data.prm) {
+        prm.innerHTML = 'You are a Premium User';
+        prm.style.color = 'Blue';
+        ShowLeadership();
+     }
+})
+
 
 function pagination({
     currentPage,
@@ -47,9 +59,8 @@ function getProducts(page){
     pgnation.innerHTML = '';
     document.getElementById('details').innerHTML = '';
     let opt = localStorage.getItem('option');
-    axios.get(`http://44.201.35.159:4000/expense/get-exp/pref/${opt}?page=${page}`, { headers: {"Authorization" : token} })
+    axios.get(`http://localhost:4000/expense/get-exp/pref/${opt}?page=${page}`, { headers: {"Authorization" : token} })
 .then((response) => {
-
     for(var i=0; i<response.data.expenses.length; i++){
         prtdata(response.data.expenses[i]);
     }
@@ -75,7 +86,7 @@ function addvalue(e){
     if(myobj.Amount=='' || myobj.Description=='') alert("Please enter the details");
     else{
         
-        axios.post('http://44.201.35.159:4000/expense/add-exp',myobj, {headers: {"Authorization": token } })
+        axios.post('http://localhost:4000/expense/add-exp',myobj, {headers: {"Authorization": token } })
         .then((response) => {
            prtdata(response.data.newEx);
         })
@@ -104,7 +115,7 @@ function prtdata(myobj){
 
     function dltexp(e){
         console.log(myobj.id);
-        axios.delete(`http://44.201.35.159:4000/expense/dlt-exp/${myobj.id}`, {headers: {"Authorization": token}});
+        axios.delete(`http://localhost:4000/expense/dlt-exp/${myobj.id}`, {headers: {"Authorization": token}});
         li.remove();
     }
 
@@ -115,13 +126,13 @@ async function rzpexp(e) {
     e.preventDefault();
     const token = localStorage.getItem('token');
     console.log(13);
-    const response = await axios.get('http://44.201.35.159:4000/purchase/premiummembership', { headers: {"Authorization": token}});
+    const response = await axios.get('http://localhost:4000/purchase/premiummembership', { headers: {"Authorization": token}});
     console.log(response);
     var options = {
         "key": response.data.key_id,
         "order_id": response.data.order.id,
         "handler": async function (response) {
-            await axios.post('http://44.201.35.159:4000/purchase/updatetransactionstatus', {
+            await axios.post('http://localhost:4000/purchase/updatetransactionstatus', {
                 order_id: options.order_id,
                 payment_id: response.razorpay_payment_id,
             }, {headers: {"Authorization": token} }  )
@@ -137,7 +148,7 @@ async function rzpexp(e) {
     rzp1.open();
 
     rzp1.on('payment.failed', async function (response) {
-        await axios.post('http://44.201.35.159:4000/purchase/updatetransactionstatus', {
+        await axios.post('http://localhost:4000/purchase/updatetransactionstatus', {
             order_id: options.order_id,
             payment_id: response.razorpay_payment_id,
         }, {headers: {"Authorization": token} }  )
@@ -152,7 +163,7 @@ async function ShowLeadership() {
     newElement.innerHTML = 'Leader Board';
 
     newElement.onclick = async () => {
-        const ldrbrdarray = await axios.get('http://44.201.35.159:4000/premium/leaderboard',  { headers: {"Authorization" : token} });
+        const ldrbrdarray = await axios.get('http://localhost:4000/premium/leaderboard',  { headers: {"Authorization" : token} });
         console.log(ldrbrdarray);
         console.log(8);
 
@@ -170,7 +181,7 @@ async function ShowLeadership() {
 }
 
 function download() {
-    axios.get('http://44.201.35.159:4000/userfile/download', {headers: {"Authorization" : token}})
+    axios.get('http://localhost:4000/userfile/download', {headers: {"Authorization" : token}})
     .then(res => {
         console.log(res);
         if(res.status == 200){
@@ -189,15 +200,15 @@ function download() {
 function select() {
     let opt = document.getElementById('opt').value;
     localStorage.setItem('option', opt);
-    console.log('ww>>', opt);
-    axios.get(`http://44.201.35.159:4000/expense/get-exp/pref/${opt}`, { headers: {"Authorization" : token} })
+    //console.log('ww>>', opt);
+    axios.get(`http://localhost:4000/expense/get-exp/pref/${opt}`, { headers: {"Authorization" : token} })
    .then((response) => {
-    
-    if(response.data.prm) {
-        prm.innerHTML = 'You are a Premium User';
-        prm.style.color = 'Blue';
-        ShowLeadership();
-     }
+    //console.log(response);
+    // if(response.data.prm) {
+    //     prm.innerHTML = 'You are a Premium User';
+    //     prm.style.color = 'Blue';
+    //     ShowLeadership();
+    //  }
     document.getElementById('details').innerHTML = '';
     for(var i=0; i<response.data.expenses.length; i++){
         prtdata(response.data.expenses[i]);

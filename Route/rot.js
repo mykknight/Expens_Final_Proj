@@ -15,6 +15,8 @@ Router.post('/expense/add-exp', userauthentication.authentication , UserCont.add
 
 Router.get('/expense/get-exp/pref/:nom', userauthentication.authentication , UserCont.allexp);
 
+Router.get('/expense/get-exp',userauthentication.authentication, UserCont.getexp);
+
 Router.delete('/expense/dlt-exp/:prodID', userauthentication.authentication , UserCont.dltexp);
 
 Router.get('/userfile/download', userauthentication.authentication ,UserCont.downloadExp);

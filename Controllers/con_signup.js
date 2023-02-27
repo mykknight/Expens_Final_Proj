@@ -26,6 +26,8 @@ exports.UserSignUp = (req,res,next) => {
 
 exports.UserLogin = async (req,res,next) => {
 
+    console.log('sss>>');
+
     function generateAccessToken(id,name) {
         return jwt.sign({ userId: id, name: name}, '23102000');
     }
@@ -52,6 +54,11 @@ exports.UserLogin = async (req,res,next) => {
     else return res.status(400).json({msg: 'User Does not exist'});  
    }
    catch(err){console.log(err)};
+}
+
+exports.getexp = async (req,res) => {
+    let expenses = await Expens.findAll({where: {UserId: req.user.id}});
+    res.status(222).json({exp: expenses, prm: req.user.ispremiumuser});
 }
 
 exports.addexp = async (req,res,next) => {
@@ -87,7 +94,7 @@ exports.allexp = async (req,res,next) => {
         const page = req.query.page || 1;
         console.log('aaa>>>', Number(allowitem), 'bbb>>', page);
         let totalexp;
-        await Expens.count()
+        await Expens.count({where: {UserId: req.user.id}})
         .then((total) => {
             totalexp = total;
             return Expens.findAll({
@@ -102,7 +109,7 @@ exports.allexp = async (req,res,next) => {
                 prm: req.user.ispremiumuser,
                 expenses: expens,
                 currentPage: page,
-                hasnextPage: allowitem * page < totalexp,
+                hasnextPage: (allowitem*page) < totalexp,
                 nextPage: Number(page) + 1,
                 haspreviousPage: page > 1,
                 previousPage: page - 1,
